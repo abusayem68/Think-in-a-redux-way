@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Counter Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+  </head>
+  <body class="bg-stone-200">
+    <main class="py-5 text-center">
+      <h1 class="text-5xl font-semibold mb-8">Simple Counter Application</h1>
+      <div class="bg-white w-2/5 rounded py-8 mx-auto mb-4">
+        <div
+          id="counter"
+          class="text-4xl font-semibold mb-6">
+          0
+        </div>
+        <div class="buttons">
+          <button
+            type="button"
+            id="increment"
+            class="rounded-full bg-green-700 px-4 py-2 text-white text-lg">
+            Increment
+          </button>
+          <button
+            type="button"
+            id="decrement"
+            class="rounded-full bg-red-700 px-4 py-2 text-white text-lg">
+            Decrement
+          </button>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
