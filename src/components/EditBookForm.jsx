@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import addBook from '../redux/bookStore/thunk/addBook';
+import updateBook from '../redux/editBook/thunk/updateBook';
 
-const AddNewBookForm = () => {
+const EditBookForm = () => {
   const [name, setName] = useState('');
   const [author, setAuthor] = useState('');
   const [thumbnail, setThumbnail] = useState('');
@@ -10,7 +11,21 @@ const AddNewBookForm = () => {
   const [rating, setRating] = useState('');
   const [featured, setFeatured] = useState(false);
 
+  const { books } = useSelector((state) => state.books);
+  const { status, bookId } = useSelector((state) => state.editing);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (bookId && books) {
+      const selectedBook = books.find((book) => book.id === bookId);
+      setName(selectedBook.name);
+      setAuthor(selectedBook.author);
+      setThumbnail(selectedBook.thumbnail);
+      setPrice(selectedBook.price);
+      setRating(selectedBook.rating);
+      setFeatured(selectedBook.featured);
+    }
+  }, [bookId, books]);
 
   const resetForm = () => {
     setName('');
@@ -25,13 +40,16 @@ const AddNewBookForm = () => {
     e.preventDefault();
     if (typeof price === 'number' && typeof rating === 'number') {
       dispatch(
-        addBook({
-          name,
-          author,
-          thumbnail,
-          price,
-          rating,
-          featured,
+        updateBook({
+          bookId,
+          bookInfo: {
+            name,
+            author,
+            thumbnail,
+            price,
+            rating,
+            featured,
+          },
         })
       );
       resetForm();
@@ -43,7 +61,7 @@ const AddNewBookForm = () => {
   return (
     <div>
       <div className="p-4 overflow-hidden bg-white shadow-cardShadow rounded-md">
-        <h4 className="mb-8 text-xl font-bold text-center">Add New Book</h4>
+        <h4 className="mb-8 text-xl font-bold text-center">Edit Book</h4>
         <form
           onSubmit={handleOnsubmit}
           className="book-form">
@@ -51,6 +69,7 @@ const AddNewBookForm = () => {
             <label htmlFor="name">Book Name</label>
             <input
               onChange={(e) => setName(e.target.value)}
+              value={name}
               required
               className="text-input"
               type="text"
@@ -63,6 +82,7 @@ const AddNewBookForm = () => {
             <label htmlFor="category">Author</label>
             <input
               onChange={(e) => setAuthor(e.target.value)}
+              value={author}
               required
               className="text-input"
               type="text"
@@ -75,6 +95,7 @@ const AddNewBookForm = () => {
             <label htmlFor="image">Image Url</label>
             <input
               onChange={(e) => setThumbnail(e.target.value)}
+              value={thumbnail}
               required
               className="text-input"
               type="text"
@@ -88,6 +109,7 @@ const AddNewBookForm = () => {
               <label htmlFor="price">Price</label>
               <input
                 onChange={(e) => setPrice(parseFloat(e.target.value))}
+                value={price}
                 required
                 className="text-input"
                 type="number"
@@ -100,6 +122,7 @@ const AddNewBookForm = () => {
               <label htmlFor="quantity">Rating</label>
               <input
                 onChange={(e) => setRating(parseInt(e.target.value))}
+                value={rating}
                 required
                 className="text-input"
                 type="number"
@@ -114,6 +137,7 @@ const AddNewBookForm = () => {
           <div className="flex items-center">
             <input
               onChange={(e) => setFeatured(e.target.checked)}
+              checked={featured}
               id="input-Bookfeatured"
               type="checkbox"
               name="featured"
@@ -131,7 +155,7 @@ const AddNewBookForm = () => {
             type="submit"
             className="submit"
             id="submit">
-            Add Book
+            Update Book
           </button>
         </form>
       </div>
@@ -139,4 +163,4 @@ const AddNewBookForm = () => {
   );
 };
 
-export default AddNewBookForm;
+export default EditBookForm;
